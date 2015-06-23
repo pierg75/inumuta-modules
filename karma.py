@@ -8,48 +8,61 @@ Licensed under the Eiffel Forum License 2.
 from __future__ import unicode_literals
 from willie.module import rate, rule, commands
 from willie.tools import Identifier
+import re
 
 
 @rate(10)
-@rule(r'^([\S]+?)\+\+$')
+@rule(ur'([\S]+?)\+\+')
 def promote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '++' message.
     """
     if (trigger.is_privmsg):
         return bot.say('People like it when you tell them good things.')
-    if (bot.db.get_nick_id(Identifier(trigger.group(1))) == bot.db.get_nick_id(Identifier(trigger.nick))):
-        return bot.say('You may not give yourself karma!')
-    current_karma = bot.db.get_nick_value(trigger.group(1), 'karma')
-    if not current_karma:
-        current_karma = 0
-    else:
-        current_karma = int(current_karma)
-    current_karma += 1
 
-    bot.db.set_nick_value(trigger.group(1), 'karma', current_karma)
-    bot.say(trigger.group(1) + ' == ' + str(current_karma))
+    names = re.findall('[\w][\S]+[\+\+]', trigger.raw)
+    for name in names:
+        who = name.split('+')[0].strip().split().pop()
+        if (bot.db.get_nick_id(Identifier(who)) == bot.db.get_nick_id(Identifier(trigger.nick))):
+            bot.say('You may not give yourself karma!')
+            continue
+        current_karma = bot.db.get_nick_value(who, 'karma')
+
+        if not current_karma:
+            current_karma = 0
+        else:
+            current_karma = int(current_karma)
+        current_karma += 1
+
+        bot.db.set_nick_value(who, 'karma', current_karma)
+        bot.say(who + ' == ' + str(current_karma))
 
 
 @rate(10)
-@rule(r'^([\S]+?)\-\-$')
+@rule(ur'([\S]+?)\-\-')
 def demote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '--' message.
     """
     if (trigger.is_privmsg):
         return bot.say('Say it to their face!')
-    if (bot.db.get_nick_id(Identifier(trigger.group(1))) == bot.db.get_nick_id(Identifier(trigger.nick))):
-        return bot.say('You may not reduce your own karma!')
-    current_karma = bot.db.get_nick_value(trigger.group(1), 'karma')
-    if not current_karma:
-        current_karma = 0
-    else:
-        current_karma = int(current_karma)
-    current_karma -= 1
 
-    bot.db.set_nick_value(trigger.group(1), 'karma', current_karma)
-    bot.say(trigger.group(1) + ' == ' + str(current_karma))
+    names = re.findall('[\w][\S]+[\-\-]', trigger.raw)
+    for name in names:
+        who = name.split('+')[0].strip().split().pop()
+        if (bot.db.get_nick_id(Identifier(who)) == bot.db.get_nick_id(Identifier(trigger.nick))):
+            bot.say('You may not reduce yourself karma!')
+            continue
+        current_karma = bot.db.get_nick_value(who, 'karma')
+
+        if not current_karma:
+            current_karma = 0
+        else:
+            current_karma = int(current_karma)
+        current_karma -= 1
+
+        bot.db.set_nick_value(who, 'karma', current_karma)
+        bot.say(who + ' == ' + str(current_karma))
 
 
 @rate(10)
