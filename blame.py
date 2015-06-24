@@ -7,8 +7,9 @@ Licensed under the Eiffel Forum License 2.
 """
 from __future__ import unicode_literals
 from willie.module import rule
+import random
 
 
-@rule('#blame$nickname')
+@rule('(die|blame|kill|beat|spit|hit|crash|batter|hammer|pound|thrash)(es|s)?.+$nickname')
 def blame(bot, trigger):
-    bot.action('dies a little inside')
+    bot.action(random.choice(('dies a little inside', 'will survive!', 'drowns his sorrows in beer')))
