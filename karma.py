@@ -20,10 +20,11 @@ def promote_karma(bot, trigger):
     if (trigger.is_privmsg):
         return bot.say('People like it when you tell them good things.')
 
-    names = re.findall('[\w][\S]+[\+\+]', trigger.raw)
+    names = re.findall('[\w][\S]+\+\+', trigger.raw)
     for name in names:
         who = name.split('+')[0].strip().split().pop()
-        if (bot.db.get_nick_id(Identifier(who)) == bot.db.get_nick_id(Identifier(trigger.nick))):
+        if (bot.db.get_nick_id(Identifier(who)) ==
+                bot.db.get_nick_id(Identifier(trigger.nick))):
             bot.say('You may not give yourself karma!')
             continue
         current_karma = bot.db.get_nick_value(who, 'karma')
@@ -35,7 +36,7 @@ def promote_karma(bot, trigger):
         current_karma += 1
 
         bot.db.set_nick_value(who, 'karma', current_karma)
-        bot.say(who + ' == ' + str(current_karma))
+        bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
 
 
 @rate(10)
@@ -47,10 +48,11 @@ def demote_karma(bot, trigger):
     if (trigger.is_privmsg):
         return bot.say('Say it to their face!')
 
-    names = re.findall('[\w][\S]+[\-\-]', trigger.raw)
+    names = re.findall('[\w][\S]+\-\-', trigger.raw)
     for name in names:
         who = name.split('+')[0].strip().split().pop()
-        if (bot.db.get_nick_id(Identifier(who)) == bot.db.get_nick_id(Identifier(trigger.nick))):
+        if (bot.db.get_nick_id(Identifier(who)) ==
+                bot.db.get_nick_id(Identifier(trigger.nick))):
             bot.say('You may not reduce yourself karma!')
             continue
         current_karma = bot.db.get_nick_value(who, 'karma')
@@ -62,7 +64,7 @@ def demote_karma(bot, trigger):
         current_karma -= 1
 
         bot.db.set_nick_value(who, 'karma', current_karma)
-        bot.say(who + ' == ' + str(current_karma))
+        bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
 
 
 @rate(10)
