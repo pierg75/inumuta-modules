@@ -27,7 +27,7 @@ def ud_search(bot, trigger):
     try:
         response = web.get_urllib_object(url, 20)
     except UnicodeError:
-        bot.say('[UrbanDictionary] ENGLISH MOTHERFUCKER, DO YOU SPEAK IT?')
+        bot.say('[UrbanDictionary] ENGLISH, DO YOU SPEAK IT?')
         return
     else:
         data = json.loads(response.read())
