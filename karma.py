@@ -20,23 +20,30 @@ def promote_karma(bot, trigger):
     if (trigger.is_privmsg):
         return bot.say('People like it when you tell them good things.')
 
+    already_updated = []
     names = re.findall('[\w][\S]+\+\+', trigger.raw)
     for name in names:
         who = name.split('+')[0].strip().split().pop()
-        if (bot.db.get_nick_id(Identifier(who)) ==
-                bot.db.get_nick_id(Identifier(trigger.nick))):
-            bot.say('You may not give yourself karma!')
+        if who in already_updated:
             continue
-        current_karma = bot.db.get_nick_value(who, 'karma')
-
-        if not current_karma:
-            current_karma = 0
         else:
-            current_karma = int(current_karma)
-        current_karma += 1
+            if (bot.db.get_nick_id(Identifier(who)) ==
+                bot.db.get_nick_id(Identifier(trigger.nick))):
+                bot.say('You may not give yourself karma!')
+                continue
+            current_karma = bot.db.get_nick_value(who, 'karma')
 
-        bot.db.set_nick_value(who, 'karma', current_karma)
-        bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
+            if not current_karma:
+                current_karma = 0
+            else:
+                current_karma = int(current_karma)
+            current_karma += 1
+
+            bot.db.set_nick_value(who, 'karma', current_karma)
+            bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
+            # Let's filter out all the eventual duplicate occurences of ++
+            # People are evil!!
+            already_updated.append(who)
 
 
 @rate(10)
@@ -48,23 +55,30 @@ def demote_karma(bot, trigger):
     if (trigger.is_privmsg):
         return bot.say('Say it to their face!')
 
+    already_updated = []
     names = re.findall('[\w][\S]+\-\-', trigger.raw)
     for name in names:
-        who = name.split('+')[0].strip().split().pop()
-        if (bot.db.get_nick_id(Identifier(who)) ==
-                bot.db.get_nick_id(Identifier(trigger.nick))):
-            bot.say('You may not reduce yourself karma!')
+        who = name.split('-')[0].strip().split().pop()
+        if who in already_updated:
             continue
-        current_karma = bot.db.get_nick_value(who, 'karma')
-
-        if not current_karma:
-            current_karma = 0
         else:
-            current_karma = int(current_karma)
-        current_karma -= 1
+            if (bot.db.get_nick_id(Identifier(who)) ==
+                bot.db.get_nick_id(Identifier(trigger.nick))):
+                bot.say('You may not reduce yourself karma!')
+                continue
+            current_karma = bot.db.get_nick_value(who, 'karma')
 
-        bot.db.set_nick_value(who, 'karma', current_karma)
-        bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
+            if not current_karma:
+                current_karma = 0
+            else:
+                current_karma = int(current_karma)
+            current_karma -= 1
+
+            bot.db.set_nick_value(who, 'karma', current_karma)
+            bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
+            # Let's filter out all the eventual duplicate occurences of ++
+            # People are evil!!
+            already_updated.append(who)
 
 
 @rate(10)
