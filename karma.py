@@ -12,7 +12,7 @@ import re
 
 
 @rate(10)
-@rule(ur'.*([\S]+?)\+\+')
+@rule(ur'.*[\w][\S]+\+\+')
 def promote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '++' message.
@@ -47,7 +47,7 @@ def promote_karma(bot, trigger):
 
 
 @rate(10)
-@rule(ur'.*([\S]+?)\-\-')
+@rule(ur'.*[\w][\S]+\-\-')
 def demote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '--' message.
