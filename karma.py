@@ -23,7 +23,7 @@ def promote_karma(bot, trigger):
     already_updated = []
     names = re.findall('[\w][\S]+\+\+', trigger.raw)
     for name in names:
-        who = name.split('+')[0].strip().split().pop()
+        who = name.split('++')[0].strip().split().pop()
         if who in already_updated:
             continue
         else:
@@ -58,7 +58,7 @@ def demote_karma(bot, trigger):
     already_updated = []
     names = re.findall('[\w][\S]+\-\-', trigger.raw)
     for name in names:
-        who = name.split('-')[0].strip().split().pop()
+        who = name.split('--')[0].strip().split().pop()
         if who in already_updated:
             continue
         else:
