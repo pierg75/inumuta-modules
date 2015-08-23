@@ -82,7 +82,7 @@ def demote_karma(bot, trigger):
 
 
 @rate(10)
-@rule(r'^([\S]+?)\=\=$')
+@rule(ur'^([\S]+?)\=\=$')
 def show_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '--' message.
