@@ -12,7 +12,7 @@ import re
 
 
 @rate(10)
-@rule(r'.*[\w][\S]+\+\+')
+@rule(r'\b[\S]+\+\+')
 def promote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '++' message.
@@ -21,7 +21,7 @@ def promote_karma(bot, trigger):
         return bot.say('People like it when you tell them good things.')
 
     already_updated = []
-    names = re.findall('[\w][\S]+\+\+', trigger.raw)
+    names = re.findall(r'\b[\S]+\+\+', trigger.raw)
     for name in names:
         who = name.split('++')[0].strip().split().pop()
         if who in already_updated:
@@ -47,7 +47,7 @@ def promote_karma(bot, trigger):
 
 
 @rate(10)
-@rule(r'.*[\w][\S]+\-\-')
+@rule(r'\b[\S]+\-\-')
 def demote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '--' message.
@@ -56,7 +56,7 @@ def demote_karma(bot, trigger):
         return bot.say('Say it to their face!')
 
     already_updated = []
-    names = re.findall('[\w][\S]+\-\-', trigger.raw)
+    names = re.findall(r'\b[\S]+\-\-', trigger.raw)
     for name in names:
         who = name.split('--')[0].strip().split().pop()
         if who in already_updated:
@@ -81,12 +81,14 @@ def demote_karma(bot, trigger):
             already_updated.append(who)
 
 
+""" Let's disable this for now, it doesn't work anyway
 @rate(10)
-@rule(r'^([\S]+?)\=\=$')
+@rule(r'\b[\S]+\=\=')
 def show_karma(bot, trigger):
-    """
+    \"\"\"
     Update karma status for specify IRC user if get '--' message.
-    """
+    \"\"\"
+    who = trigger.group(1).split('--')[0].strip().split().pop()
     current_karma = bot.db.get_nick_value(trigger.group(1), 'karma')
     if not current_karma:
         current_karma = 0
@@ -94,6 +96,7 @@ def show_karma(bot, trigger):
         current_karma = int(current_karma)
 
     bot.say(trigger.group(1) + ' == ' + str(current_karma))
+"""
 
 
 @commands('karma')
