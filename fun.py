@@ -6,8 +6,8 @@ Copyright 2014 Max Gurela
 Licensed under the Eiffel Forum License 2.
 """
 from __future__ import unicode_literals
-from willie import module, web
-from willie.formatting import color
+from sopel import module, web
+from sopel.formatting import color
 import json
 import os
 import string
@@ -47,7 +47,7 @@ def decode(bot, trigger):
 
     if (encoding.lower() == 'binary'):
         if (set(text) == set([u'1', u'0'])):
-            bot.say(''.join(chr(int(text[i:i + 8], 2)) for i in xrange(0, len(text), 8)))
+            bot.say(''.join(chr(int(text[i:i + 8], 2)) for i in range(0, len(text), 8)))
             return
         else:
             bot.say('[Decode] Invalid binary string')
@@ -298,7 +298,7 @@ def flip_text(text):
 # ZALGO CONVERTER
 #
 
-unoise = u''.join(map(unichr, xrange(0x300, 0x36F)))
+unoise = u''.join(map(chr, range(0x300, 0x36F)))
 
 
 def mungle(char, intensity=10):

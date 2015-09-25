@@ -7,9 +7,9 @@ Licensed under the Eiffel Forum License 2.
 http://willie.dftba.net
 """
 from __future__ import unicode_literals
-from willie import web, tools
-from willie.module import NOLIMIT, commands, example, rule
-import urllib2
+from sopel import web, tools
+from sopel.module import NOLIMIT, commands, example, rule
+import urllib
 import lxml.html
 
 @commands('acron')
@@ -23,7 +23,7 @@ def acron(bot, trigger):
     
     url = "http://www.acronymfinder.com/"
     full_url = url+trigger.group(2)+".html"
-    acron_page   = urllib2.urlopen(full_url).read()
+    acron_page   = urllib.request.urlopen(full_url).read()
 
 
     # Decode the html page
