@@ -22,6 +22,7 @@ def promote_karma(bot, trigger):
 
     already_updated = []
     names = re.findall(r'\b[\S]+\+\+', trigger.raw)
+    # print("%s names" % names)
     for name in names:
         who = name.split('++')[0].strip().split().pop()
         if who in already_updated:

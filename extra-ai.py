@@ -10,8 +10,28 @@ import random
 import time
 
 
-@rule('^join\ #')
+@rule('^(join\ +|\ +\/j\ +)#')
 @rate(30)
 def goodbye(bot, trigger):
     bot.reply('FAIL!')
+
+@rule('(^\ * (\/\ |\\)nick\ +)')
+@rate(30)
+def goodbye(bot, trigger):
+    bot.reply('FAIL!')
+
+
+
+@rule('(^(l[sl]|cd|pwd))')
+@rate(30)
+def goodbye(bot, trigger):
+    bot.reply('command not found')
+
+
+@rule('(?i)((sopel|TheGreatAbis)(\ |\?|\!|\.))')
+@rate(30)
+def love(bot, trigger):
+    bot.reply("Yes love?")
+
+
 
