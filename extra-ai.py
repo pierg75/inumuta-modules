@@ -22,10 +22,10 @@ def goodbye(bot, trigger):
 
 
 
-@rule('(^(l[sl]|cd|pwd))')
-@rate(30)
-def goodbye(bot, trigger):
-    bot.reply('command not found')
+#@rule('(^(l[sl]|cd|pwd)\ +\b)')
+#@rate(30)
+#def goodbye(bot, trigger):
+#    bot.reply('command not found')
 
 
 @rule('(?i)((sopel|TheGreatAbis)(\ |\?|\!|\.))')
