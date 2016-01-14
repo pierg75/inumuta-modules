@@ -8,13 +8,13 @@ Licensed under the Eiffel Forum License 2.
 http://justfen.com
 """
 from __future__ import unicode_literals
-import re
-from willie import web
-from willie.module import commands, example, VOICE
-from willie.formatting import color
-from urllib2 import quote
+#import re
+from sopel import web
+from sopel.module import commands, example, VOICE
+from sopel.formatting import color
+#from urllib2 import quote
 import json
-import sys
+#import sys
 
 
 @commands('ud', 'udefine', 'urbandictionary', 'urbandict', 'udict')
@@ -47,7 +47,7 @@ def ud_search(bot, trigger):
         if (len(definition) + length) > 445:
             ellipsies = '...'
         udoutput = "[UrbanDictionary] %s; %.*s%s | %s >> %s %s" % (query, 445 - length, definition, ellipsies, permalink, thumbsup, thumbsdown)
-        if not "spam spam" in udoutput:
+        if "spam spam" not in udoutput:
             if not trigger.sender.is_nick() and bot.privileges[trigger.sender][trigger.nick] < VOICE:
                 bot.notice(udoutput, recipient=trigger.nick)
             else:

@@ -12,7 +12,7 @@ import re
 
 
 @rate(10)
-@rule(r'\b[\S]+\+\+')
+@rule(r'.*?\b[\S]+\+\+')
 def promote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '++' message.
@@ -21,15 +21,17 @@ def promote_karma(bot, trigger):
         return bot.say('People like it when you tell them good things.')
 
     already_updated = []
+    # print(trigger.raw)
     names = re.findall(r'\b[\S]+\+\+', trigger.raw)
     # print("%s names" % names)
     for name in names:
         who = name.split('++')[0].strip().split().pop()
+        # print(who)
         if who in already_updated:
             continue
         else:
             if (bot.db.get_nick_id(Identifier(who)) ==
-                bot.db.get_nick_id(Identifier(trigger.nick))):
+               bot.db.get_nick_id(Identifier(trigger.nick))):
                 bot.say('You may not give yourself karma!')
                 continue
             current_karma = bot.db.get_nick_value(who, 'karma')
@@ -41,14 +43,15 @@ def promote_karma(bot, trigger):
             current_karma += 1
 
             bot.db.set_nick_value(who, 'karma', current_karma)
-            bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
+            bot.say('%s has now %s point of karma!' %
+                    (who, str(current_karma)))
             # Let's filter out all the eventual duplicate occurences of ++
             # People are evil!!
             already_updated.append(who)
 
 
 @rate(10)
-@rule(r'\b[\S]+\-\-')
+@rule(r'.*?\b[\S]+\-\-')
 def demote_karma(bot, trigger):
     """
     Update karma status for specify IRC user if get '--' message.
@@ -57,14 +60,16 @@ def demote_karma(bot, trigger):
         return bot.say('Say it to their face!')
 
     already_updated = []
+    # print(trigger.raw)
     names = re.findall(r'\b[\S]+\-\-', trigger.raw)
+    # print("%s names" % names)
     for name in names:
         who = name.split('--')[0].strip().split().pop()
         if who in already_updated:
             continue
         else:
             if (bot.db.get_nick_id(Identifier(who)) ==
-                bot.db.get_nick_id(Identifier(trigger.nick))):
+               bot.db.get_nick_id(Identifier(trigger.nick))):
                 bot.say('You may not reduce yourself karma!')
                 continue
             current_karma = bot.db.get_nick_value(who, 'karma')
@@ -76,7 +81,8 @@ def demote_karma(bot, trigger):
             current_karma -= 1
 
             bot.db.set_nick_value(who, 'karma', current_karma)
-            bot.say('%s has now %s point of karma!' % (who, str(current_karma)))
+            bot.say('%s has now %s point of karma!' %
+                    (who, str(current_karma)))
             # Let's filter out all the eventual duplicate occurences of ++
             # People are evil!!
             already_updated.append(who)

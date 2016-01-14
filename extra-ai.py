@@ -10,28 +10,27 @@ import random
 import time
 
 
-@rule('^(join\ +|\ +\/j\ +)#')
 @rate(30)
+@rule('^\ +\/(j|join)\ \b')
 def goodbye(bot, trigger):
     bot.reply('FAIL!')
 
+@rate(30)
 @rule('(^\ * (\/\ |\\)nick\ +)')
-@rate(30)
 def goodbye(bot, trigger):
     bot.reply('FAIL!')
 
-
-
-#@rule('(^(l[sl]|cd|pwd)\ +\b)')
-#@rate(30)
-#def goodbye(bot, trigger):
-#    bot.reply('command not found')
-
-
-@rule('(?i)((sopel|TheGreatAbis)(\ |\?|\!|\.))')
 @rate(30)
-def love(bot, trigger):
-    bot.reply("Yes love?")
+@rule('(^(l[sl]|cd|pwd)\ +\b)')
+def goodbye(bot, trigger):
+    bot.reply('command not found')
 
+@rate(30)
+@rule('(?i)((sopel|TheGreatAbis)(\ |\?|\!|\.|))$')
+def love(bot, trigger):
+    respond = ['yes?', 'what\'s up?', 'uhm', 'whazzup?', 'doh!', 'yes love?','want a beer?','Yeap?']
+    randtime = random.uniform(0, 3)
+    time.sleep(randtime)
+    bot.reply(random.choice(respond))
 
 
